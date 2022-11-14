@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>GeoJSON tutorial - Leaflet</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin=""/>
+    <script src="indonesia.geojson" type="text/javascript"></script>
+
+    <script src="padang.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 600px;
+			width: 100%;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+
+	
+</head>
+<body>
+
+<div id='map'></div>
+
+<script src="indonesia.geojson" type="text/javascript"></script>
+
+<script>
+	const map = L.map('map').setView([-0.8999779197248197, 100.36058202878593], 17);
+    
+
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+    L.marker([-0.8999779197248197, 100.36058202878593]).addTo(map);
+
+    var JalanKerumah = [
+            [-0.8998667430410442, 100.36053958658006],
+            [-0.8999241506147341, 100.36089045380874],
+            [-0.9010148939834494, 100.36153477361574],
+            [-0.9013465819695362, 100.36182822620484],
+            [-0.901942982396501, 100.3620291774357],
+            [-0.9022969954314067, 100.36245021809962],
+        ];
+
+        L.polyline(JalanKerumah).addTo(map);
+
+    var locations = [   [-0.8998667430410442, 100.36053958658006],
+            [-0.8999241506147341, 100.36089045380874],
+            [-0.9010148939834494, 100.36153477361574],
+            [-0.9013465819695362, 100.36182822620484],
+            [-0.901942982396501, 100.3620291774357],
+            [-0.9022969954314067, 100.36245021809962],];
+
+    for (var i = 0; i < locations.length; i++) {
+        marker = new L.marker([locations[i][0], locations[i][1]]).addTo(map);
+    }
+
+    var info_pnp = '<p style="text-align: center;"> <img src="https://lh5.googleusercontent.com/p/AF1QipMDIUBeP34rVpaZZ1k8IPGwdk2jYiEh8AHYEJcd=w408-h305-k-no" width="250px" height="100px"></p><p style="text-align: justify;">Rumah TAsya beralamat di lapai jl.shinta dahlia dan line ini menunjukkan jalan dari rumah tasya ke apotek firma indah. Tujun dibuat ini karena tasya sering membeli peralatan pertolongan pertama</p>';
+    L.marker([-0.8998667430410442, 100.36053958658006]).bindTooltip("Rumah Tasya").bindPopup(info_pnp).addTo(map);
+    
+    var info_pnp = '<p style="text-align: center;"> <img src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=I8UP4WfGwNK7tf0HvHaBLw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=162.38556&pitch=0&thumbfov=100" width="250px" height="100px"></p><p style="text-align: justify;">Ini berakir disini poliline ya yang bertujuan memberi info dari rumah tasya ke apotek firma indah</p>';
+    L.marker([-0.9022969954314067, 100.36245021809962]).bindTooltip("Apotek Firma Indah").bindPopup(info_pnp).addTo(map);
+
+    var circle = L.circle ([-0.9022969954314067, 100.36245021809962],{
+        color: 'red',
+        fillColor: 'f03',
+        fillOpacity: 0.5,
+        radius: 25
+    }).addTo(map).bindPopup('I am dogy');
+
+    
+    
+
+    var polygon = L.polygon([
+        [-0.9243019661209293, 100.37255321635345],
+        [-0.9203699073078672, 100.36737776202777],
+        [-0.9256977620288939, 100.36281359165201]
+    ]).addTo(map).bindPopup('Polygon area lapai');
+
+    const bicycleRentalLayer = L.geoJSON([padang], {
+
+    style(feature) {
+        return feature.properties && feature.properties.style;
+    },
+
+    onEachFeature,
+
+    pointToLayer(feature, latlng) {
+        return L.circleMarker(latlng, {
+            radius: 8,
+            fillColor: '#ff7800',
+            color: '#000',
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        });
+    }
+    }).addTo(map);
+   
+</script>
+</body>
+</html>
